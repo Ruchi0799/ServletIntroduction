@@ -55,11 +55,22 @@ public class LoginServlet extends HttpServlet {
 		//doGet(request, response);
 		String user=request.getParameter("user");
 		String pwd=request.getParameter("pwd");
+		String name=request.getParameter("name");
 	
 		String userID=getServletConfig().getInitParameter("user");
 		String password=getServletConfig().getInitParameter("password");
 		
-		if(userID.equals(user) && password.equals(pwd))
+		char firstletter=name.charAt(0);
+		
+		if(name==null||name.length()<3||name.equals("") || !Character.isUpperCase(firstletter) )
+		{
+			RequestDispatcher rd=getServletContext().getRequestDispatcher("/login.html");
+			PrintWriter out=response.getWriter();
+			out.println("<font color=red> Please enter valid name </font>");
+			rd.include(request, response);
+		}
+		
+		else if(userID.equals(user) && password.equals(pwd))
 		{
 			request.setAttribute("user", user);
 			request.getRequestDispatcher("LoginSuccess.jsp").forward(request, response);
